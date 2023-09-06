@@ -1,21 +1,26 @@
-# Docker file for react app created using vite
-FROM node:latest as build
-# Create app directory
-WORKDIR /app
-# Install app dependencies
-COPY package*.json ./
+#by the FROM instruction we are extracting node 16 -version from dockerhub as base image and taged with 'AS builder'
+FROM node:16 AS builder
+
+#then inside container i am creating frontend directory for copy the files host directory to here with RUN instruction
+RUN mkdir /frontend
+
+# COPYING files from host directory to container selective(frontend) directory with COPY instruction
+COPY . /frontend
+
+# now i am navigating out working directory in side container with WORKDIR instruction
+WORKDIR /frontend
+
+#now i am running build related commands with RUN instruction
 RUN npm install
-# Build app
-COPY . .
 RUN npm run build
 
-# Docker file for nginx server to serve react app build files (spa routing)
-FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
-# This is required to make nginx serve index.html for all routes
-COPY nginx.conf /etc/nginx/conf.d/default.conf 
-EXPOSE 80
-# If you add a custom CMD in the Dockerfile, be sure to include -g daemon off; 
-# in the CMD in order for nginx to stay in the foreground, so that Docker can 
-# track the process properly (otherwise your container will stop immediately after starting)!
-CMD ["nginx", "-g", "daemon off;"]
+#now i need to take nginx web-application as webhost to host our application with FROM instruction
+FROM nginx
+
+#now i need to copy the all dependency files from 'dist' directory to nginx 'host directory' (/usr/share/nginx/html)
+COPY --from=builder /frontend/dist /usr/share/nginx/html
+# now i am exposing port for container with EXPOSE instruction
+#EXPOSE 80
+
+#to continous-start container with CMD istruction
+#CMD ["npm", "start"]

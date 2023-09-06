@@ -1,15 +1,23 @@
-# Docker file nodejs azure app services
-FROM node:latest
-# Create app directory
-WORKDIR /app
-# Install app dependencies
-COPY package*.json ./
+#by the FROM instruction we are extracting node 16 -version from dockerhub as base image
+FROM node:16
+
+#then inside container i am creating backend directory for copy the files host directory to here with RUN instruction
+RUN mkdir /backend
+
+# COPYING files from host directory to container selective(backend) directory with COPY instruction
+COPY . /backend
+
+# now i am navigating out working directory in side container with WORKDIR instruction
+WORKDIR /backend
+
+#now i am running build related commands with RUN instruction 
 RUN npm install
-# Build app
-COPY . .
 RUN npx prisma generate
 RUN npm run build
-# Expose port
+
+# now i am exposing port for container with EXPOSE instruction
 EXPOSE 8080
-# Start app
-CMD [ "npm", "start" ]
+
+#to continous-start container with CMD istruction
+CMD ["npm", "start"]
+

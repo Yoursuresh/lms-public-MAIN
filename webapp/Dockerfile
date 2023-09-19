@@ -19,8 +19,14 @@ FROM nginx
 
 #now i need to copy the all dependency files from 'dist' directory to nginx 'host directory' (/usr/share/nginx/html)
 COPY --from=builder /frontend/dist /usr/share/nginx/html
-# now i am exposing port for container with EXPOSE instruction
-#EXPOSE 80
 
-#to continous-start container with CMD istruction
-#CMD ["npm", "start"]
+# This is required to make nginx serve index.html proxy pass for all routes
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# now i am exposing port for container with EXPOSE instruction
+EXPOSE 80
+
+# If you add a custom CMD in the Dockerfile, be sure to include -g daemon off;
+# in the CMD in order for nginx to stay in the foreground, so that Docker can
+# track the process properly (otherwise your container will stop immediately after starting)!
+CMD ["nginx", "-g", "daemon off;"]

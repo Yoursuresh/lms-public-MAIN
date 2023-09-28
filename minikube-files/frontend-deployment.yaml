@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      tier: frontend   # Changed label from "app" to "tier"
+  template:
+    metadata:
+      labels:
+        tier: frontend   # Changed label from "app" to "tier"
+    spec:
+      containers:
+        - name: frontend-container
+          image: yoursureshdockerhub/minikube-fe
+          ports:
+            - containerPort: 80

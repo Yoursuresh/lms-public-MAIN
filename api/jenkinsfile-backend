@@ -11,7 +11,10 @@ pipeline {
     }
     stages {
 
-
+         stage('installing docker') {
+             steps { sh 'sudo curl https://raw.githubusercontent.com/digitaledify/lms-public/main/install-docker.sh | bash'
+                } 
+            }
     
          stage('Creating network') {
             steps {

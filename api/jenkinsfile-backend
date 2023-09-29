@@ -4,9 +4,9 @@ pipeline {
         label 'lms-slavenode'
     }
     environment {
-        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKERHUB_CREDENTIALS = credentials('yoursureshdockerhub')
         registry = "yoursureshdockerhub/lms-backend"
-        registryCredential = 'dockerhub-credentials'
+        registryCredential = 'yoursureshdockerhub'
         dockerImage = ''
     }
     stages {

@@ -1,11 +1,13 @@
+
 pipeline {
     agent {
         label 'lms-slavenode'
     }
     stages {
-      
-                stage('update server') {
-              steps'sudo apt update -y'
-}
-}
+        stage('update server') {
+            steps {
+                sh 'sudo apt update -y'
+            }
+        }
+    }
 }

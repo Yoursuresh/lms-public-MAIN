@@ -6,16 +6,12 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         registry = "yoursureshdockerhub/lms-backend"
-        registryCredential = 'yoursureshdockerhub'
+        registryCredential = 'dockerhub-credentials'
         dockerImage = ''
     }
     stages {
 
-        stage('update server') {
-            steps {
-                sh 'sudo apt update -y'
-            }
-        }
+
     
          stage('Creating network') {
             steps {

@@ -10,13 +10,13 @@ pipeline {
         dockerImage = ''
     }
     stages {
-{
+
         stage('update server') {
             steps {
                 sh 'sudo apt update -y'
             }
         }
-    }
+    
          stage('Creating network') {
             steps {
                 script {

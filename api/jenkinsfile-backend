@@ -11,10 +11,20 @@ pipeline {
     }
     stages {
 
-         stage('installing docker') {
-             steps { sh 'sudo curl https://raw.githubusercontent.com/digitaledify/lms-public/main/install-docker.sh | bash'
-                } 
+        stage('installing docker') {
+            steps {
+                script {
+                    def dockerCheck = sh(script: 'docker --version', returnStatus: true)
+                    
+                    if (dockerCheck == 0) {
+                        echo 'Docker is already installed'
+                    } else {
+                        sh 'sudo curl https://raw.githubusercontent.com/digitaledify/lms-public/main/install-docker.sh | bash'
+                    }
+                }
             }
+        }
+    
     
          stage('Creating network') {
             steps {

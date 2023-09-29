@@ -10,6 +10,7 @@ pipeline {
         dockerImage = ''
     }
     stages {
+{
         stage('update server') {
             steps {
                 sh 'sudo apt update -y'
@@ -29,4 +30,5 @@ pipeline {
                 }
             }
         }
+}
 }

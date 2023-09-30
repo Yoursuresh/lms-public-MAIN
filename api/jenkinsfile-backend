@@ -19,7 +19,7 @@ pipeline {
                     tokenCredentialId: 'slack-credentials',
                 )
             }
-}
+   }
 
         stage('installing docker') {
             steps {

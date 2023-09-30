@@ -16,9 +16,7 @@ pipeline {
                     channel: 'jenkins-lms-backend',
                     color: '#FFA500',
                     message: 'Hii.....LMS-Application Backend Pipeline Has Been Started.',
-                    teamDomain: 'jenkins-notification-LMS',
-                    tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY',
-                    username: 'Suresh'
+                    tokenCredentialId: 'slack-credentials',
                 )
             }
 }

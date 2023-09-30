@@ -10,16 +10,15 @@ pipeline {
         dockerImage = ''
     }
     stages {
-        stage('Send Slack Notification') {
+
+                        stage('pipeline status') {
             steps {
-                slackSend(
-                    channel: 'jenkins-lms-backend',
-                    color: '#FFA500',
-                    message: 'Hii....',
-                    notifyCommitters: true,
-                    teamDomain: 'jenkins-notification-LMS',
-                    tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
-                )
+                script {
+                    slackSend channel: 'jenkins-lms-backend',
+                            color: '#1e1ec9',
+                            message: 'lms-Backend Pipeline has been Started',
+                            tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
+                }
             }
         }
    

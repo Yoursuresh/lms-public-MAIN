@@ -54,7 +54,7 @@ pipeline {
             script {
                 slackSend channel: 'jenkins-lms-backend', color: 'good', message: 'hi..CONGRATULATIONS!!! Backend job succeeded', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
 
-mail bcc: '', body: '''building lms application backend job got success check browser with your ip:port number/api. it will show success 
+                mail bcc: '', body: '''building lms application backend job got success check browser with your ip:port number/api. it will show success 
 
 ThankYou''', cc: '', from: '', replyTo: '', subject: 'Build Successful !! lms_backend', to: 'yoursureshb@gmail.com'
 }

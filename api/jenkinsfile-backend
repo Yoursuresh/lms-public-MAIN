@@ -15,9 +15,10 @@ pipeline {
                 slackSend(
                     channel: 'jenkins-lms-backend',
                     color: '#FFA500',
-                    message: 'hi',
+                    message: 'Hii....',
+                    notifyCommitters: true,
                     teamDomain: 'jenkins-notification-LMS',
-                    tokenCredentialId: 'slack-credentials'
+                    tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
                 )
             }
         }

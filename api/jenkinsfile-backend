@@ -1,5 +1,5 @@
 
-pipeline 
+pipeline {
     agent {
         label 'lms-slavenode'
     }
@@ -10,6 +10,18 @@ pipeline
         dockerImage = ''
     }
     stages {
+        stage('Send Slack Notification') {
+            steps {
+                slackSend(
+                    channel: 'jenkins-lms-backend',
+                    color: '#FFA500',
+                    message: 'Hii.....LMS-Application Backend Pipeline Has Been Started.',
+                    teamDomain: 'jenkins-notification-LMS',
+                    tokenCredentialId: 'slack-credentials',
+                    username: 'Suresh'
+                )
+            }
+}
 
         stage('installing docker') {
             steps {

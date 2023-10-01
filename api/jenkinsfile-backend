@@ -60,7 +60,7 @@ pipeline {
      stage('running database container') {
          steps {
                 sh'docker container rm --force lmsdb'
-                sh'docker container run -dt --name lmsdb -p 5432:5432 --network lmsnetwork -e POSTGRES_PASSWORD=password postgres'
+                sh'docker run -d -p 5432:5432 --network lmsnetwork -e POSTGRES_PASSWORD=password --name lmsdb postgres'
              }  
          }
       stage('running backend container') {

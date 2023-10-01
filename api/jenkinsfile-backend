@@ -50,7 +50,7 @@ pipeline {
     }
 
     post {
-        always { // This block will run always, regardless of success or failure
+        failure { // This block will run always, regardless of success or failure
             script {
                 slackSend channel: 'jenkins-lms-backend', color: 'danger', message: 'Ooops..Failed!! Check the back-end job configurations Thanks...Suresh - Job failed', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
 

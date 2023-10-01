@@ -12,9 +12,9 @@ pipeline {
         stage('pipeline status') {
             steps {
                 script {
-                    slackSend channel: 'jenkins-lms-backend',
+                    slackSend channel: 'jenkins-lms-frontend',
                             color: '#1e1ec9',
-                            message: 'lms-Backend Pipeline has been Started',
+                            message: 'lms-frontend Pipeline has been Started',
                             tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
                 }
             }

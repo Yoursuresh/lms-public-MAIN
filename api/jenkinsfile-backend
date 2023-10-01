@@ -20,20 +20,6 @@ pipeline {
             }
         }
 
-        stage('installing docker') {
-            steps {
-                script {
-                    def dockerCheck = sh(script: 'docker --version', returnStatus: true)
-
-                    if (dockerCheck == 0) {
-                        echo 'Docker is already installed'
-                    } else {
-                        sh 'sudo curl https://raw.githubusercontent.com/digitaledify/lms-public/main/install-docker.sh | bash'
-                    }
-                }
-            }
-        }
-
         stage('Creating network') {
             steps {
                 script {
@@ -47,9 +33,41 @@ pipeline {
                 }
             }
         }
-  }  
-  
-    post {
+
+
+      stage('building lms-app backend image') {
+           steps { 
+                  sh 'cd api && docker build -t yoursureshdockerhub/jenkins-be .'
+              
+            }
+         }
+     stage('docker login') {
+        steps { 
+                sh'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+         }
+
+     stage('backend image pushing to dockerhub') {
+         steps { 
+                sh'docker push yoursureshdockerhub/jenkins-be'
+            }
+         }
+     stage('remove old images with same name') {
+        steps { 
+               sh'docker rmi -f yoursureshdockerhub/jenkins-be'
+             }
+         }
+     stage('running database container') {
+         steps {
+                sh'docker container rm --force lmsdb'
+                sh'docker container run -dt --name lmsdb -p 5432:5432 --network lmsnetwork -e POSTGRES_PASSWORD=password postgres'
+      stage('running backend container') {
+           steps {
+                 sh'docker container rm --force lms-be'
+                 sh'docker container run -dt -p 8080:8080 --network lmsnetwork -e DATABASE_URL=postgresql://postgres:password@lmsdb:5432/postgres -e MODE=dev -e PORT=8080 --name lms-be yoursureshdockerhub/jenkins-be'
+
+
+post {
 
         success {
             script {

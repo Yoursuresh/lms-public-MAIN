@@ -1,4 +1,4 @@
-pipeline {
+pipeline 
     agent {
         label 'lms-slavenode'
     }
@@ -56,8 +56,17 @@ pipeline {
 
                 mail bcc: '', body: '''building lms application backend job got success check browser with your ip:port number/api. it will show success 
 
-ThankYou''', cc: '', from: '', replyTo: '', subject: 'Build Successful !! lms_backend', to: 'yoursureshb@gmail.com'
-}
+                ThankYou''', cc: '', from: '', replyTo: '', subject: 'Build Successful !! lms_backend', to: 'yoursureshb@gmail.com'
+            }
+        }
+        failure {
+            script {
+                slackSend channel: 'jenkins-lms-backend', color: 'danger', message: 'Ooops..Failed!!check the back-end job configurations Thanks...Suresh - Job failed', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
+                
+                mail bcc: '', body: '''building lms application backend job got failed check job configuration.
+
+                ThankYou''', cc: '', from: '', replyTo: '', subject: 'Ooops..Failed!!check the back-end job configurations Thanks...Suresh - Job failed', to: 'yoursureshb@gmail.com'
+            }
         }
     }
 }

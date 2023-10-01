@@ -64,7 +64,7 @@ pipeline {
      stage('running database container') {
          steps {
                 sh'docker container rm --force lmsfe'
-                sh'docker run -dt -p 80:80 --name lmsfe yoursureshdockerhub/jenkins-fe'
+                sh'docker run -dt -p 8000:80 --name lmsfe yoursureshdockerhub/jenkins-fe'
              }  
          }
      }

@@ -69,7 +69,7 @@ pipeline {
                  sh'docker container run -dt -p 8080:8080 --network lmsnetwork -e DATABASE_URL=postgresql://postgres:password@lmsdb:5432/postgres -e MODE=dev -e PORT=8080 --name lms-be yoursureshdockerhub/jenkins-be'
             }
          }
-
+     }
 
 post {
 
@@ -93,4 +93,4 @@ post {
         }
     }
 }
-}
+

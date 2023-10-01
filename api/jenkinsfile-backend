@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('installing docker') {
+        stage('installing docker') 
             steps {
                 script {
                     def dockerCheck = sh(script: 'docker --version', returnStatus: true)

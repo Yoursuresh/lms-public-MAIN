@@ -1,0 +1,94 @@
+pipeline {
+    agent {
+        label 'lms-slavenode'
+    }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        registry = "yoursureshdockerhub/lms-frontend"
+        registryCredential = 'dockerhub-credentials'
+        dockerImage = ''
+    }
+    stages {
+        stage('pipeline status') {
+            steps {
+                script {
+                    slackSend channel: 'jenkins-lms-backend',
+                            color: '#1e1ec9',
+                            message: 'lms-Backend Pipeline has been Started',
+                            tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
+                }
+            }
+        }
+
+         stage('Creating network') {
+            steps {
+                script {
+                    def networkExists = sh(script: 'docker network ls -q -f name=lmsnetwork', returnStatus: true)
+                    if (networkExists == 0) {
+                        echo 'lmsnetwork already exists'
+                    } else {
+                        echo 'Creating lmsnetwork...'
+                        sh 'docker network create lmsnetwork'
+                    }
+                }
+            }
+        }
+        stage('sonarqube analysis') {
+            steps {
+                sh 'docker container run --rm -e SONAR_HOST_URL="http://100.26.224.92:9000" -e SONAR_LOGIN="sqp_a488c1d862770efb18b3adab5e5be682a93ed3bd" -v ".:/usr/src" sonarsource/sonar-scanner-cli -Dsonar.projectKey=lms-backend-jenkins'
+            }
+        }
+
+      stage('building lms-app frontend image') {
+           steps { 
+                  sh 'cd webapp && docker build -t yoursureshdockerhub/jenkins-fe .'
+              
+            }
+         }
+     stage('docker login') {
+        steps { 
+                sh'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+         }
+
+     stage('backend image pushing to dockerhub') {
+         steps { 
+                sh'docker push yoursureshdockerhub/jenkins-fe'
+            }
+         }
+     stage('remove old images with same name') {
+        steps { 
+               sh'docker rmi -f yoursureshdockerhub/jenkins-fe'
+             }
+         }
+     stage('running database container') {
+         steps {
+                sh'docker container rm --force lmsfe'
+                sh'docker run -dt -p 80:80 --name lmsfe yoursureshdockerhub/jenkins-fe'
+             }  
+         }
+     }
+
+post {
+    success {
+        script {
+            slackSend channel: 'jenkins-lms-frontend', color: 'good', message: 'Hi..CONGRATULATIONS!!! Frontend job succeeded', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
+
+            mail bcc: '', body: '''Building lms application frontend job got success. Check your browser with your IP or Domain address to view the LMS-Application.
+
+            Thank you''', cc: '', from: '', replyTo: '', subject: 'Build Successful !! lms_frontend', to: 'yoursureshb@gmail.com'
+        }
+    }
+    failure { 
+        script {
+            slackSend channel: 'jenkins-lms-frontend', color: 'danger', message: 'Ooops..Failed!! Check the frontend job configurations Thanks...Suresh - Job failed', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
+
+            mail bcc: '', body: '''Building lms application frontend job got failed. Check job configuration.
+
+            Thank you''', cc: '', from: '', replyTo: '', subject: 'Ooops..Failed!! Check the frontend job configurations Thanks...Suresh - Job failed', to: 'yoursureshb@gmail.com'
+        }
+    }
+}
+
+}
+

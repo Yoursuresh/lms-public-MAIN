@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('installing docker') 
+        stage('installing docker') {
             steps {
                 script {
                     def dockerCheck = sh(script: 'docker --version', returnStatus: true)
@@ -50,15 +50,7 @@ pipeline {
     }
 
     post {
-        failure { // This block will run always, regardless of success or failure
-            script {
-                slackSend channel: 'jenkins-lms-backend', color: 'danger', message: 'Ooops..Failed!! Check the back-end job configurations Thanks...Suresh - Job failed', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
 
-                mail bcc: '', body: '''Building lms application backend job got failed. Check job configuration.
-
-                Thank you''', cc: '', from: '', replyTo: '', subject: 'Ooops..Failed!! Check the back-end job configurations Thanks...Suresh - Job failed', to: 'yoursureshb@gmail.com'
-            }
-        }
         success {
             script {
                 slackSend channel: 'jenkins-lms-backend', color: 'good', message: 'Hi..CONGRATULATIONS!!! Backend job succeeded', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
@@ -66,6 +58,15 @@ pipeline {
                 mail bcc: '', body: '''Building lms application backend job got success. Check your browser with your IP:port number/api. It will show success.
 
                 Thank you''', cc: '', from: '', replyTo: '', subject: 'Build Successful !! lms_backend', to: 'yoursureshb@gmail.com'
+            }
+        }
+        failure { 
+            script {
+                slackSend channel: 'jenkins-lms-backend', color: 'danger', message: 'Ooops..Failed!! Check the back-end job configurations Thanks...Suresh - Job failed', tokenCredentialId: '4ugGqA8TOvRJReyGh3w5cfuY'
+
+                mail bcc: '', body: '''Building lms application backend job got failed. Check job configuration.
+
+                Thank you''', cc: '', from: '', replyTo: '', subject: 'Ooops..Failed!! Check the back-end job configurations Thanks...Suresh - Job failed', to: 'yoursureshb@gmail.com'
             }
         }
     }

@@ -61,10 +61,14 @@ pipeline {
          steps {
                 sh'docker container rm --force lmsdb'
                 sh'docker container run -dt --name lmsdb -p 5432:5432 --network lmsnetwork -e POSTGRES_PASSWORD=password postgres'
+             }  
+         }
       stage('running backend container') {
            steps {
                  sh'docker container rm --force lms-be'
                  sh'docker container run -dt -p 8080:8080 --network lmsnetwork -e DATABASE_URL=postgresql://postgres:password@lmsdb:5432/postgres -e MODE=dev -e PORT=8080 --name lms-be yoursureshdockerhub/jenkins-be'
+            }
+         }
 
 
 post {
@@ -88,4 +92,5 @@ post {
             }
         }
     }
+}
 }

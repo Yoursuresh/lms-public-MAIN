@@ -20,9 +20,17 @@ pipeline {
             }
         }
 
-stage('Creating network') {
-    steps {   
-             sh 'docker network create lmsnetwork'
+         stage('Creating network') {
+            steps {
+                script {
+                    def networkExists = sh(script: 'docker network ls -q -f name=lmsnetwork', returnStatus: true)
+                    if (networkExists == 0) {
+                        echo 'lmsnetwork already exists'
+                    } else {
+                        echo 'Creating lmsnetwork...'
+                        sh 'docker network create lmsnetwork'
+                    }
+                }
             }
         }
 

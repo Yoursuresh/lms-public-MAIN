@@ -16,7 +16,7 @@ pipeline {
 
 
       
-        stage('building frontend image') {
+       /* stage('building frontend image') {
             steps {
                 sh 'cd webapp && docker build -t yoursureshdockerhub/jenkins-eks-fe .'
             }
@@ -46,6 +46,7 @@ pipeline {
               
                 sh 'cd k8s-files && kubectl apply -f frontend-deployment.yaml'
                 sh 'cd k8s-files && kubectl apply -f frontend-service.yaml'
+*/
                 sh 'kubectl get all'
         
             }

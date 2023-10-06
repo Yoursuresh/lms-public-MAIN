@@ -16,26 +16,26 @@ pipeline {
 
 
       
-     #  stage('building frontend image') {
+        stage('building frontend image') {
             steps {
                 sh 'cd webapp && docker build -t yoursureshdockerhub/jenkins-eks-fe .'
             }
         }
 
 
-       # stage('docker login') {
+        stage('docker login') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 
-       # stage('pushing image') {
+        stage('pushing image') {
             steps {
                 sh 'docker push yoursureshdockerhub/jenkins-eks-fe'
             }
         }
 
-        #  stage('Removing old-images') {
+          stage('Removing old-images') {
             steps {
                 sh 'docker rmi -f yoursureshdockerhub/jenkins-eks-fe'
             }
@@ -44,8 +44,8 @@ pipeline {
         stage('running frontend container') {
             steps {
               
-             #   sh 'cd k8s-files && kubectl apply -f frontend-deployment.yaml'
-             #   sh 'cd k8s-files && kubectl apply -f frontend-service.yaml'
+               sh 'cd k8s-files && kubectl apply -f frontend-deployment.yaml'
+               sh 'cd k8s-files && kubectl apply -f frontend-service.yaml'
 
                 sh 'kubectl get all'
         

@@ -16,7 +16,7 @@ pipeline {
 
         stage('running postgres container') {
             steps {
-                sh 'docker container rm --force postgres'
+                
                 sh 'kubectl apply -f postgres-deployment.yaml'
                 sh 'kubectl apply -f postgres-clusterip-service.yaml'
             }

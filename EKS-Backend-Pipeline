@@ -18,7 +18,7 @@ pipeline {
             steps {
             
                 sh 'cd k8s-files && kubectl apply -f postgres-deployment.yaml'
-                sh 'kubectl apply -f postgres-clusterip-service.yaml'
+                sh ' cd k8s-files && kubectl apply -f postgres-clusterip-service.yaml'
             }
         }
       
@@ -45,8 +45,8 @@ pipeline {
         stage('running backend container') {
             steps {
                 sh 'docker container rm --force api'
-                sh 'kubectl apply -f backend-deployment.yaml'
-                sh 'kubectl apply -f backend-service.yaml'
+                sh 'cd k8s-files && kubectl apply -f backend-deployment.yaml'
+                sh 'cd k8s-files && kubectl apply -f backend-service.yaml'
             }
         }
     }

@@ -1,16 +1,59 @@
+
+
 pipeline {
-    agent { label 'eks-slave'
+    agent {
+        label 'eks-slave'
     }
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
+        registry = "yoursureshdockerhub"
+        registryCredential = 'yoursureshdockerhub'
+        dockerImage = ''
+    }
+
     stages {
-        stage('Update') {
+
+        stage('running postgres container') {
             steps {
-                script {
-                    sh 'sudo apt update -y'
-                }
+                sh 'docker container rm --force postgres'
+                sh 'kubectl apply -f postgres-deployment.yaml'
+                sh 'kubectl apply -f postgres-clusterip-service.yaml'
             }
         }
-        // Add more stages as needed
+      
+        stage('building backend image') {
+            steps {
+                sh 'cd api && docker build -t yoursureshdockerhub/jenkins-eks-be .'
+            }
+        }
+
+
+        stage('docker login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+
+        stage('pushing image') {
+            steps {
+                sh 'docker push yoursureshdockerhub/jenkins-eks-be'
+            }
+        }
+
+
+        stage('running backend container') {
+            steps {
+                sh 'docker container rm --force api'
+                sh 'kubectl apply -f backend-deployment.yaml'
+                sh 'kubectl apply -f backend-service.yaml'
+            }
+        }
     }
-    // Post-build actions and other pipeline configuration
 }
+
+
+
+
+
 

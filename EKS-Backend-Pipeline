@@ -41,6 +41,11 @@ pipeline {
             }
         }
 
+          stage('Removing old-images') {
+            steps {
+                sh 'docker rmi -f yoursureshdockerhub/jenkins-eks-be'
+            }
+        }
 
         stage('running backend container') {
             steps {

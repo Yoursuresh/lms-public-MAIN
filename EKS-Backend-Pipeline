@@ -44,7 +44,7 @@ pipeline {
 
         stage('running backend container') {
             steps {
-                sh 'docker container rm --force api'
+              
                 sh 'cd k8s-files && kubectl apply -f backend-deployment.yaml'
                 sh 'cd k8s-files && kubectl apply -f backend-service.yaml'
             }

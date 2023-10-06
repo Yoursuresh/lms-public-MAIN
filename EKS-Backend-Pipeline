@@ -16,8 +16,8 @@ pipeline {
 
         stage('running postgres container') {
             steps {
-                sh 'ls'
-                sh 'kubectl apply -f postgres-deployment.yaml'
+            
+                sh 'cd k8s-files && kubectl apply -f postgres-deployment.yaml'
                 sh 'kubectl apply -f postgres-clusterip-service.yaml'
             }
         }

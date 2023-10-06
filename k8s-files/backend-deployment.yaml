@@ -25,4 +25,4 @@ spec:
         - name: PORT
           value: "8080"
         - name: DATABASE_URL
-        - value: postgresql://postgres:password@postgres:5432/postgres
+        - value: "postgresql://postgres:password@postgres:5432/postgres"

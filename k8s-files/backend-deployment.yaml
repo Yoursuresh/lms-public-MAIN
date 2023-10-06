@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: yoursureshdockerhub/kubernetes-be
+        image: yoursureshdockerhub/jenkins-eks-be
         ports:
         - containerPort: 8080
 

@@ -47,6 +47,11 @@ pipeline {
             }
         }
 
+         stage('removing previous-container') {
+            steps {
+                   sh 'docker container rm --force api'
+             }
+         }
         stage('running backend container') {
             steps {
               

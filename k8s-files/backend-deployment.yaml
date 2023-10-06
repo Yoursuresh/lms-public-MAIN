@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: yoursureshdockerhub/jenkins-eks-be
+        image: yoursureshdockerhub/jenkins-eks-be:latest
         ports:
         - containerPort: 8080
         env:

@@ -47,6 +47,7 @@ pipeline {
               
                 sh 'cd k8s-files && kubectl apply -f backend-deployment.yaml'
                 sh 'cd k8s-files && kubectl apply -f backend-service.yaml'
+                sh 'curl http://52.59.52.19:8080/api'
             }
         }
     }

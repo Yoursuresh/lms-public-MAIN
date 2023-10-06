@@ -1,1 +1,16 @@
+pipeline {
+    agent { 'eks-slave'
+    }
+    stages {
+        stage('Update') {
+            steps {
+                script {
+                    sh 'sudo apt update -y'
+                }
+            }
+        }
+        // Add more stages as needed
+    }
+    // Post-build actions and other pipeline configuration
+}
 

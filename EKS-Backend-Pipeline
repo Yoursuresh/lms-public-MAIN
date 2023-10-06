@@ -52,7 +52,7 @@ pipeline {
               
                 sh 'cd k8s-files && kubectl apply -f backend-deployment.yaml'
                 sh 'cd k8s-files && kubectl apply -f backend-service.yaml'
-                
+                sh 'kubectl get all'
         
             }
         }

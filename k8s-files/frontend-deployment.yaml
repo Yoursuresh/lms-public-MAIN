@@ -19,9 +19,8 @@ spec:
         image: yoursureshdockerhub/kubernetes-fe
         ports:
         - containerPort: 80
-        env:
-        - name: VITE_API_URL
-          value: "http://a4aa5a096184a440ba6f0d501e65ddbf-1973773304.eu-central-1.elb.amazonaws.com:8080/api"
+        
+
    
         
 

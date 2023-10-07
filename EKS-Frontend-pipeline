@@ -1,5 +1,3 @@
-
-
 pipeline {
     agent {
         label 'eks-slave'
@@ -13,39 +11,41 @@ pipeline {
     }
 
     stages {
+        stage('Deleting old fe-deployment') {
+            steps {
+                sh 'kubectl delete deployment lms-webapp-deployment-test'
+            }
+        }
 
-
-      
-        stage('building frontend image') {
+        stage('Building frontend image') {
             steps {
                 sh 'cd webapp && docker build -t yoursureshdockerhub/jenkins-eks-fe .'
             }
         }
 
-
-        stage('docker login') {
+        stage('Docker login') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
             }
         }
 
-        stage('pushing image') {
+        stage('Pushing image') {
             steps {
                 sh 'docker push yoursureshdockerhub/jenkins-eks-fe'
             }
         }
 
-          stage('Removing old-images') {
+        stage('Removing old images') {
             steps {
                 sh 'docker rmi -f yoursureshdockerhub/jenkins-eks-fe'
             }
         }
 
-        stage('running frontend container') {
+        stage('Running frontend container') {
             steps {
-              sh 'docker container rm --force webapp'
-               sh 'cd k8s-files && kubectl apply -f frontend-deployment.yaml'
-               sh 'cd k8s-files && kubectl apply -f frontend-service.yaml'
+                sh 'docker container rm --force webapp'
+                sh 'cd k8s-files && kubectl apply -f frontend-deployment.yaml'
+                sh 'cd k8s-files && kubectl apply -f frontend-service.yaml'
             }
         }
     }

@@ -1,0 +1,25 @@
+
+pipeline {
+    agent {
+        label 'eks-slave'
+    }
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
+        registry = "yoursureshdockerhub"
+        registryCredential = 'yoursureshdockerhub'
+        dockerImage = ''
+    }
+
+    stages {
+
+        stage('commands') {
+            steps { 
+                   sh 'docker images '
+                   sh 'docker ps -a'
+                   sh 'kubectl get all'
+
+                  }
+               }
+            }
+         }

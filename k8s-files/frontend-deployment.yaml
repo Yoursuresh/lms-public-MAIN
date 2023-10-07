@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: yoursureshdockerhub/kubernetes-fe:latest
+        image: yoursureshdockerhub/jenkins-eks-fe:latest
         ports:
         - containerPort: 80
         env:

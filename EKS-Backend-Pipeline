@@ -14,6 +14,14 @@ pipeline {
 
     stages {
 
+        stage('removing all services and deployments') {
+            steps { 
+                   sh 'kubectl delete replicaset --all'
+                   sh 'kubectl delete deployment --all'
+                   sh 'kubectl delete svc --all'
+                  }
+               }
+
         stage('running postgres container') {
             steps {
             

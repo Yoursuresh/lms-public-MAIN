@@ -18,7 +18,6 @@ pipeline {
                    sh 'docker images '
                    sh 'docker ps -a'
                    sh 'kubectl get all'
-                sh 'kubectl logs pod/postgres-deployment-5748dbc684-k9b52'
 
                   }
                }

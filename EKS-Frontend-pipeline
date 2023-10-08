@@ -13,7 +13,7 @@ pipeline {
     stages {
         stage('Deleting old fe-deployment') {
             steps {
-                sh 'kubectl delete deployment lms-webapp-deployment-test'
+                sh 'kubectl delete deployment lms-webapp-deployment'
             }
         }
 
